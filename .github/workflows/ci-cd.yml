@@ -1,0 +1,44 @@
+# .github/workflows/ci-cd.yml
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  # 1. Pull Request Job: Runs only on pull requests
+  sonarqube-check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Simulating SonarQube Scanner. Replace with actual SonarQube action if needed.
+      - name: Run SonarQube Analysis
+        run: |
+          echo "Running SonarQube Code Quality Analysis..."
+          echo "Analysis completed successfully!"
+
+  # 2. Push/Deploy Job: Runs on main branch pushes and waits for Environment Approval
+  docker-deploy:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: production  # This forces GitHub to wait for manual approval
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Using the custom composite action created in Step 1
+      - name: Build and Push via Composite Action
+        uses: ./.github/actions/docker-build-push
+        with:
+          docker_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          docker_password: ${{ secrets.DOCKERHUB_TOKEN }}
+          image_name: 'my-first-repo'
+          image_tag: ${{ github.sha }}
