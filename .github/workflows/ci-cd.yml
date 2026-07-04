@@ -9,20 +9,21 @@ on:
 
 jobs:
   # 1. SonarQube Code Analysis Job
+  # 1. SonarQube Code Analysis Job
   sonarqube-check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Disables shallow clones for accurate blame/analysis info
+          fetch-depth: 0 
 
-      # Runs the actual SonarQube Scanner
+      # FIX: Using the official, updated SonarSource action to avoid the vulnerability error
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} # Keep this if using your own SonarQube server; remove if using SonarCloud
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} # Required if using self-hosted SonarQubeep this if using your own SonarQube server; remove if using SonarCloud
 
       # Checks the status of the quality gate
       - name: SonarQube Quality Gate Check
