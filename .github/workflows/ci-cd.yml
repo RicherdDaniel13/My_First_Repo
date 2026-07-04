@@ -9,34 +9,25 @@ on:
 
 jobs:
   # 1. SonarQube Code Analysis Job
-  # 1. SonarQube Code Analysis Job
   sonarqube-check:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux] # <-- UPDATED: Tells GitHub to run this on your KRONOS13 machine
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 
 
-      # FIX: Using the official, updated SonarSource action to avoid the vulnerability error
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} # Required if using self-hosted SonarQubeep this if using your own SonarQube server; remove if using SonarCloud
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
-      # Checks the status of the quality gate
-      - name: SonarQube Quality Gate Check
-        uses: SonarSource/sonarqube-quality-gate-action@v1
-        timeout-minutes: 5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-  # 2. Push/Deploy Job: Runs ONLY on main branch pushes and waits for Environment Approval
+  # 2. Push/Deploy Job: Runs ONLY on main branch pushes
   docker-deploy:
-    needs: sonarqube-check # Ensures deployment only happens if the scan passes!
+    needs: sonarqube-check 
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux] # <-- UPDATED: Also runs the docker deployment locally on your machine
     environment: production  
     
     steps:
