@@ -1,0 +1,16 @@
+
+node_modules/
+package-lock.json
+
+
+.cache/
+.config/
+.npm/
+.bash_history
+.bash_logout
+.bashrc
+.gitconfig
+.lesshst
+.motd_shown
+.profile
+.viminfo
