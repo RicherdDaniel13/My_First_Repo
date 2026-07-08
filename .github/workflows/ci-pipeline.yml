@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Docker login, build, tag and push
-        uses: karthipv-07/git-demo/.github/actions/docker-build-push@main
+        uses: ./.github/actions/docker-build-push
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
