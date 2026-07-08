@@ -10,7 +10,7 @@ on:
 jobs:
   sonar:
     runs-on: [self-hosted, RD_WSL]
-    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
 
     steps:
       - name: Checkout code
