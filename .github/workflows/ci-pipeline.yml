@@ -30,7 +30,7 @@ jobs:
   docker:
     runs-on: [self-hosted, RD_WSL]
     if: github.event_name == 'push'  || github.event_name == 'workflow_dispatch'
-    environment: prod
+    environment: production
     
     steps:
       - name: Checkout code
