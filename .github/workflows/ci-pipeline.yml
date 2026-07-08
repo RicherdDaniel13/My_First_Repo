@@ -39,5 +39,5 @@ jobs:
       - name: Docker login, build, tag and push
         uses: ./.github/actions/docker-build-push
         with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+           username: ${{ vars.DOCKERHUB_USERNAME }}
+           password: ${{ secrets.DOCKER_PASSWORD }}
